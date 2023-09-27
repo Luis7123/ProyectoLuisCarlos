@@ -1,21 +1,15 @@
-# Usando PostgreSQL con Python
+# database-mvc
+Sample Database application using MVC pattern bound to postgresql
 
-## Prerrequisitos
+## Requisitos
 
-- Tome nota del nombre de los datos de conexión a su base de datos. en neon.tech los encontrará en el Dashboard
-- En su proyecto, instale el paquete psycho2 con el siguiente comando:  
+Asegurese de tener una base de datos PostgreSQL y sus respectivos datos de acceso
 
-    pip install psycopg2-binary
-  
-## Conexión
+Copie el archivo SecretConfig-sample.py como SecretConfig.py y establezca en este archivo los
+datos de conexion a su base de datos.
 
-Reemplace los datos de conexion con los datos tomados de su servidor
+## Configuracion de la base de datos
 
-    connection = psycopg2.connect(database="#######", user="########", password="########", host="########", port=5432)
+Esta aplicacion requiere que este creada una tabla llamada usuarios.
 
-
-## Para saber más
-
-* Documentación de psycopg2
-https://www.psycopg.org/docs/
-
+Utilice el script en sql\crear-usuarios.sql para crear antes de ejecutar la aplicacion
