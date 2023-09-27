@@ -3,9 +3,9 @@
 
     Controla las operaciones de almacenamiento de la clase Usuario
 """
-from Usuario import Usuario
+from CreditCard import CreditCard
 
-import sys
+
 import psycopg2
 import SecretConfig
 
@@ -28,18 +28,19 @@ def ObtenerCursor( ) :
 
 def CrearTabla():
     """
-    Crea la tabla de usuarios, en caso de que no exista
+    Crea la tabla de CreditCard, en caso de que no exista
     """    
     sql = """
-create table usuarios (
+create table CreditCard (
+  Numero text not null,
   cedula varchar( 20 )  NOT NULL,
   nombre text not null,
-  apellido text not null,
-  telefono varchar(20),
-  correo text,
-  direccion text not null,
-  codigo_municipio varchar(40) not null,
-  codigo_departamento varchar(40) NOT NULL
+  banco text not null,
+  fecha_de_vencimiento varchar(20),
+  franquicia text,
+  pago_mes text not null,
+  Cuota_manejo text not null,
+  Tasa_interes text NOT NULL
 ); 
     """
     cursor = ObtenerCursor()
@@ -54,7 +55,7 @@ def EliminarTabla():
     """
     Borra (DROP) la tabla en su totalidad
     """    
-    sql = "drop table usuarios;"
+    sql = "drop table CreditCard;"
     cursor = ObtenerCursor()
     cursor.execute( sql )
     cursor.connection.commit()
@@ -66,20 +67,20 @@ def BorrarFilas():
 
     Si lo llama en produccion, pierde el empleo
     """
-    sql = "delete from usuarios;"
+    sql = "delete from CreditCard;"
     cursor = ObtenerCursor()
     cursor.execute( sql )
     cursor.connection.commit()
 
 def Borrar( usuario ):
     """ Elimina la fila que contiene a un usuario en la BD """
-    sql = f"delete from usuarios where cedula = '{usuario.cedula}'"
+    sql = f"delete from CreditCard where cedula = '{CreditCard.cedula}'"
     cursor = ObtenerCursor()
     cursor.execute( sql )
     cursor.connection.commit()
 
 
-def Insertar( usuario : Usuario ):
+def Insertar( usuario : CreditCard ):
     """ Guarda un Usuario en la base de datos """
 
     try:
@@ -87,7 +88,7 @@ def Insertar( usuario : Usuario ):
         # Todas las instrucciones se ejecutan a tavés de un cursor
         cursor = ObtenerCursor()
         cursor.execute(f"""
-        insert into usuarios (
+        insert into CreditCard (
             cedula,   nombre,  apellido,  telefono,  correo, direccion, codigo_municipio, codigo_departamento
         )
         values 
@@ -108,16 +109,16 @@ def BuscarPorCedula( cedula :str ):
 
     # Todas las instrucciones se ejecutan a tavés de un cursor
     cursor = ObtenerCursor()
-    cursor.execute(f"SELECT cedula,nombre,apellido,correo,direccion,telefono,codigo_departamento,codigo_municipio from usuarios where cedula = '{cedula}' ")
+    cursor.execute(f"SELECT cedula,nombre,apellido,correo,direccion,telefono,codigo_departamento,codigo_municipio from CreditCard where cedula = '{cedula}' ")
     fila = cursor.fetchone()
 
     if fila is None:
         raise ErrorNoEncontrado("El registro buscado, no fue encontrado. Cedula=" + cedula)
 
-    resultado = Usuario( fila[0], fila[1], fila[2], fila[3], fila[4], fila[5], fila[6], fila[7])
+    resultado = CreditCard( fila[0], fila[1], fila[2], fila[3], fila[4], fila[5], fila[6], fila[7])
     return resultado
 
-def Actualizar( usuario : Usuario ):
+def Actualizar( usuario : CreditCard ):
     """
     Actualiza los datos de un usuario en la base de datos
 
@@ -125,7 +126,7 @@ def Actualizar( usuario : Usuario ):
     """
     cursor = ObtenerCursor()
     cursor.execute(f"""
-        update usuarios
+        update CreditCard
         set 
             nombre='{usuario.nombre}',
             apellido='{usuario.apellido}',

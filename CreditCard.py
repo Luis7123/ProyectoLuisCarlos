@@ -1,4 +1,4 @@
-class Usuario:
+class CreditCard:
     """
     Pertenece la Capa de Reglas de Negocio (Model)
 

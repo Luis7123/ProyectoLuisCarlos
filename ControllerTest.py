@@ -2,7 +2,8 @@
 # Todas las prueba sunitarias importan la biblioteca unittest
 import unittest
 
-from Usuario import Usuario
+from CreditCard import CreditCard
+
 import ControladorUsuarios
 
 class ControllerTest(unittest.TestCase):
@@ -35,7 +36,7 @@ class ControllerTest(unittest.TestCase):
         """ Verifica que funcione bien la creacion y la busqueda de un usuario """
         # Pedimos crear un usuario
         print("Ejecutando testInsert")
-        usuario_prueba = Usuario( "123456", "Usuario", "Prueba", "no@tiene.correo", "EN la calle", "99999", "05", "05001"  ) 
+        usuario_prueba = CreditCard( "123456", "Usuario", "Prueba", "no@tiene.correo", "EN la calle", "99999", "05", "05001"  ) 
 
         ControladorUsuarios.Insertar( usuario_prueba )
 
