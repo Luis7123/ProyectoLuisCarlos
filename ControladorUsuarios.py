@@ -4,8 +4,6 @@
     Controla las operaciones de almacenamiento de la clase Usuario
 """
 from CreditCard import CreditCard
-
-
 import psycopg2
 import SecretConfig
 
@@ -32,15 +30,15 @@ def CrearTabla():
     """    
     sql = """
 create table CreditCard (
-  Numero text not null,
+  numero text not null,
   cedula varchar( 20 )  NOT NULL,
   nombre text not null,
   banco text not null,
   fecha_de_vencimiento varchar(20),
   franquicia text,
   pago_mes text not null,
-  Cuota_manejo text not null,
-  Tasa_interes text NOT NULL
+  cuota_manejo text not null,
+  tasa_interes text NOT NULL
 ); 
     """
     cursor = ObtenerCursor()
@@ -67,14 +65,15 @@ def BorrarFilas():
 
     Si lo llama en produccion, pierde el empleo
     """
+
     sql = "delete from CreditCard;"
     cursor = ObtenerCursor()
     cursor.execute( sql )
     cursor.connection.commit()
 
 def Borrar( usuario ):
-    """ Elimina la fila que contiene a un usuario en la BD """
-    sql = f"delete from CreditCard where cedula = '{CreditCard.cedula}'"
+    """ Elimina las filas que contienen a un usuario en la BD """
+    sql = f"delete from CreditCard where cedula = '{usuario.cedula}'"
     cursor = ObtenerCursor()
     cursor.execute( sql )
     cursor.connection.commit()
@@ -84,16 +83,16 @@ def Insertar( usuario : CreditCard ):
     """ Guarda un Usuario en la base de datos """
 
     try:
-
         # Todas las instrucciones se ejecutan a tavés de un cursor
         cursor = ObtenerCursor()
         cursor.execute(f"""
         insert into CreditCard (
-            cedula,   nombre,  apellido,  telefono,  correo, direccion, codigo_municipio, codigo_departamento
+              numero ,cedula ,nombre, banco ,fecha_de_vencimiento,franquicia , pago_mes ,cuota_manejo,tasa_interes
+
         )
         values 
         (
-            '{usuario.cedula}',  '{usuario.nombre}', '{usuario.apellido}', '{usuario.telefono}', '{usuario.correo}', '{usuario.direccion}', '{usuario.codigo_municipio}', '{usuario.codigo_departamento}'
+            '{usuario.numero}',  '{usuario.cedula}', '{usuario.nombre}', '{usuario.banco}', '{usuario.fecha_de_vencimiento}', '{usuario.franquicia}', '{usuario.pago_mes}', '{usuario.cuota_manejo}','{usuario.tasa_interes}'
         );
                        """)
 
@@ -109,13 +108,13 @@ def BuscarPorCedula( cedula :str ):
 
     # Todas las instrucciones se ejecutan a tavés de un cursor
     cursor = ObtenerCursor()
-    cursor.execute(f"SELECT cedula,nombre,apellido,correo,direccion,telefono,codigo_departamento,codigo_municipio from CreditCard where cedula = '{cedula}' ")
+    cursor.execute(f"SELECT numero,cedula,nombre,banco,fecha_de_vencimiento,franquicia,pago_mes,cuota_manejo,tasa_interes from CreditCard where cedula = '{cedula}' ")
     fila = cursor.fetchone()
 
     if fila is None:
         raise ErrorNoEncontrado("El registro buscado, no fue encontrado. Cedula=" + cedula)
 
-    resultado = CreditCard( fila[0], fila[1], fila[2], fila[3], fila[4], fila[5], fila[6], fila[7])
+    resultado = CreditCard( fila[0], fila[1], fila[2], fila[3], fila[4], fila[5], fila[6], fila[7],fila[8])
     return resultado
 
 def Actualizar( usuario : CreditCard ):
@@ -128,16 +127,24 @@ def Actualizar( usuario : CreditCard ):
     cursor.execute(f"""
         update CreditCard
         set 
-            nombre='{usuario.nombre}',
-            apellido='{usuario.apellido}',
-            telefono='{usuario.telefono}',
-            direccion='{usuario.direccion}',
-            correo='{usuario.correo}',
-            codigo_departamento='{usuario.codigo_departamento}',
-            codigo_municipio='{usuario.codigo_municipio}'
+            numero ='{usuario.numero}',
+            cedula = '{usuario.cedula}',
+            nombre = '{usuario.nombre}',
+            banco = '{usuario.banco}',
+            fecha_de_vencimiento = '{usuario.fecha_de_vencimiento}',
+            franquicia = '{usuario.franquicia}',
+            pago_mes = '{usuario.pago_mes}',
+            cuota_manejo = '{usuario.cuota_manejo}',
+            tasa_interes = '{usuario.tasa_interes}'
         where cedula='{usuario.cedula}'
+
     """)
     # Las instrucciones DDL y DML no retornan resultados, por eso no necesitan fetchall()
     # pero si necesitan commit() para hacer los cambios persistentes
     cursor.connection.commit()
 
+usuario_prueba = CreditCard( "123456", "981273", "Prueba", "avvillas", "2025/06/05", "mastercard", "12", "5000","3.1"  ) 
+usuario_prueba2 = CreditCard(  "45646", "981273", "Prueba2", "bancolombia", "2027/06/05", "visa", "15", "6000","3.4"  )  
+
+Insertar( usuario_prueba )
+Insertar(usuario_prueba2)

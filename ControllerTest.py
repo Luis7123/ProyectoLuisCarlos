@@ -36,7 +36,7 @@ class ControllerTest(unittest.TestCase):
         """ Verifica que funcione bien la creacion y la busqueda de un usuario """
         # Pedimos crear un usuario
         print("Ejecutando testInsert")
-        usuario_prueba = CreditCard( "123456", "Usuario", "Prueba", "no@tiene.correo", "EN la calle", "99999", "05", "05001"  ) 
+        usuario_prueba = CreditCard( "123456", "981273", "Prueba", "avvillas", "2025/06/05", "mastercard", "12", "5000","3.1"  ) 
 
         ControladorUsuarios.Insertar( usuario_prueba )
 
@@ -44,14 +44,15 @@ class ControllerTest(unittest.TestCase):
         usuario_buscado = ControladorUsuarios.BuscarPorCedula( usuario_prueba.cedula )
 
         # Verificamos que los datos del usuario sean correcto
+        self.assertEqual( usuario_prueba.numero, usuario_buscado.numero )
         self.assertEqual( usuario_prueba.cedula, usuario_buscado.cedula )
         self.assertEqual( usuario_prueba.nombre, usuario_buscado.nombre )
-        self.assertEqual( usuario_prueba.apellido, usuario_buscado.apellido )
-        self.assertEqual( usuario_prueba.direccion, usuario_buscado.direccion )
-        self.assertEqual( usuario_prueba.correo, usuario_buscado.correo )
-        self.assertEqual( usuario_prueba.telefono, usuario_buscado.telefono )
-        self.assertEqual( usuario_prueba.codigo_departamento, usuario_buscado.codigo_departamento )
-        self.assertEqual( usuario_prueba.codigo_municipio, usuario_buscado.codigo_municipio )
+        self.assertEqual( usuario_prueba.banco, usuario_buscado.banco )
+        self.assertEqual( usuario_prueba.fecha_de_vencimiento, usuario_buscado.fecha_de_vencimiento )
+        self.assertEqual( usuario_prueba.franquicia, usuario_buscado.franquicia )
+        self.assertEqual( usuario_prueba.pago_mes, usuario_buscado.pago_mes )
+        self.assertEqual( usuario_prueba.cuota_manejo, usuario_buscado.cuota_manejo)
+        self.assertEqual( usuario_prueba.tasa_interes, usuario_buscado.tasa_interes)
 
     def testUpdate(self) :
         """
@@ -59,18 +60,20 @@ class ControllerTest(unittest.TestCase):
         """
         print("Ejecutando testUpdate")
         # 1. Crear el usuario
-        usuario_prueba = Usuario( "654987", "Señor", "tester", "tampoco@tiene.correo", "rural", "8888888", "63", "63001"  ) 
+        usuario_prueba = CreditCard(  "45646", "981273", "Prueba2", "bancolombia", "2027/06/05", "visa", "15", "6000","3.4"  ) 
         ControladorUsuarios.Insertar( usuario_prueba )
 
         # 2. Actualizarle datos
         # usuario_prueba.cedula = "00000000" la cedula no se puede cambiar
-        usuario_prueba.nombre = "Doctor"
-        usuario_prueba.apellido = "amigo"
-        usuario_prueba.telefono = "77777777"
-        usuario_prueba.direccion = "nueva"
-        usuario_prueba.correo = "otro@correo.com"
-        usuario_prueba.codigo_departamento = "76"
-        usuario_prueba.codigo_municipio = "76001"
+        usuario_prueba.numero ="4563"
+        usuario_prueba.nombre = "Luis"
+        usuario_prueba.banco  = "davivienda"
+        usuario_prueba.fecha_de_vencimiento = "2028/02/02"
+        usuario_prueba.franquicia = "mastercard"
+        usuario_prueba.pago_mes = "8"
+        usuario_prueba.cuota_manejo = "50000"
+        usuario_prueba.tasa_interes = "3.3"
+
 
         ControladorUsuarios.Actualizar( usuario_prueba )
 
@@ -79,20 +82,21 @@ class ControllerTest(unittest.TestCase):
 
         # 4. assert
         # Verificamos que los datos del usuario sean correcto
+        self.assertEqual( usuario_prueba.numero, usuario_actualizado.numero )
         self.assertEqual( usuario_prueba.cedula, usuario_actualizado.cedula )
         self.assertEqual( usuario_prueba.nombre, usuario_actualizado.nombre )
-        self.assertEqual( usuario_prueba.apellido, usuario_actualizado.apellido )
-        self.assertEqual( usuario_prueba.direccion, usuario_actualizado.direccion )
-        self.assertEqual( usuario_prueba.correo, usuario_actualizado.correo )
-        self.assertEqual( usuario_prueba.telefono, usuario_actualizado.telefono )
-        self.assertEqual( usuario_prueba.codigo_departamento, usuario_actualizado.codigo_departamento )
-        self.assertEqual( usuario_prueba.codigo_municipio, usuario_actualizado.codigo_municipio )
+        self.assertEqual( usuario_prueba.banco, usuario_actualizado.banco )
+        self.assertEqual( usuario_prueba.fecha_de_vencimiento, usuario_actualizado.fecha_de_vencimiento )
+        self.assertEqual( usuario_prueba.franquicia, usuario_actualizado.franquicia )
+        self.assertEqual( usuario_prueba.pago_mes, usuario_actualizado.pago_mes )
+        self.assertEqual( usuario_prueba.cuota_manejo, usuario_actualizado.cuota_manejo)
+        self.assertEqual( usuario_prueba.tasa_interes, usuario_actualizado.tasa_interes)
 
     def testDelete(self):
         """ Prueba la funcionalidad de borrar usuarios """
         print("Ejecutando testDelete")
         # 1. Crear el usuario e insertarlo
-        usuario_prueba = Usuario( "741852369", "Borrenmme", "Please", "no@tiene.correo", "EN la calle", "99999", "05", "05001"  ) 
+        usuario_prueba = CreditCard(  "653246", "3245", "Prueba3", "bancolombia", "2027/06/05", "visa", "15", "6000","3.4"  ) 
         ControladorUsuarios.Insertar( usuario_prueba )
 
         # 2. Borrarlo
