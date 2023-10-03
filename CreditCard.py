@@ -29,15 +29,15 @@ class CreditCard:
         """
         Compara el objeto actual, con otra instancia de la clase Usuario
         """
-        self.assertEqual( self.numero, comparar_con.numero )
-        self.assertEqual( self.cedula, comparar_con.cedula )
-        self.assertEqual( self.nombre, comparar_con.nombre )
-        self.assertEqual( self.banco, comparar_con.banco )
-        self.assertEqual( self.fecha_de_vencimiento, comparar_con.fecha_de_vencimiento )
-        self.assertEqual( self.franquicia, comparar_con.franquicia )
-        self.assertEqual( self.pago_mes, comparar_con.pago_mes )
-        self.assertEqual( self.cuota_manejo, comparar_con.cuota_manejo)
-        self.assertEqual( self.tasa_interes, comparar_con.tasa_interes)
+        assert( self.numero == comparar_con.numero )
+        assert( self.cedula == comparar_con.cedula )
+        assert( self.nombre == comparar_con.nombre )
+        assert( self.banco == comparar_con.banco )
+        assert( self.fecha_de_vencimiento == comparar_con.fecha_de_vencimiento )
+        assert( self.franquicia == comparar_con.franquicia )
+        assert( self.pago_mes == comparar_con.pago_mes )
+        assert( self.cuota_manejo == comparar_con.cuota_manejo)
+        assert( self.tasa_interes == comparar_con.tasa_interes)
 
         posicion = 0
 

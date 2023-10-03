@@ -10,3 +10,10 @@ create table CreditCard (
   cuota_manejo text not null,
   tasa_interes text NOT NULL
 ); 
+
+create table Amortizaciones (
+  payment text not null,
+  interest varchar( 20 )  NOT NULL,
+  amortizacion text not null,
+  balance text not null,
+); 
