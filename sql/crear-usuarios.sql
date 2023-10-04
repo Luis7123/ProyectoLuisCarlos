@@ -12,8 +12,10 @@ create table CreditCard (
 ); 
 
 create table Amortizaciones (
+  cedula_usuario text not null,
   payment text not null,
   interest varchar( 20 )  NOT NULL,
   amortizacion text not null,
-  balance text not null,
-); 
+  balance text not null
+  pay_date date not null
+);

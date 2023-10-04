@@ -7,6 +7,7 @@ from CreditCard import CreditCard
 import psycopg2
 import SecretConfig
 import math
+from datetime import date
 
 class ErrorNoEncontrado( Exception ):
     """ Excepcion que indica que una fila buscada no fue encontrada"""
@@ -67,10 +68,12 @@ def CrearTabla():
 
             
 create table Amortizaciones (
+  cedula_usuario text not null,
   payment text not null,
   interest varchar( 20 )  NOT NULL,
   amortizacion text not null,
-  balance text not null
+  balance text not null,
+  pay_date date not null
 ); """
 
     cursor = ObtenerCursor()
@@ -149,40 +152,34 @@ def BuscarPorNumeroTarjeta(numero_tarjeta:str):
     fila = cursor.fetchone()
 
     if fila is None:
-        raise ErrorNoEncontrado("the register couldn't be found. credit_number=" + numero_tarjeta)
+        raise ErrorNoEncontrado("the register couldn't be found. credit_number="+ numero_tarjeta)
 
     result = CreditCard( fila[0], fila[1], fila[2], fila[3], fila[4], fila[5], fila[6], fila[7],fila[8])
     return result
 
 
-def InsertarAmortizaciones(numero_tarjeta,amount,period):
+def InsertarAmortizaciones(list1):
+        
+        #numero_tarjeta,payment,interest,amortization,balance,pay_date):
     """
     Guarda la lista de amortizaciones asociados a un Usuario
     """
-    usuario = BuscarPorCedula(numero_tarjeta)
-
-    amount = amount
-    interest = usuario.tasa_interes
-    period = period
-    amortization=0
-
-    payment=CalcularCuota(amount, interest, period)
-    #payment_Cambio=CalcularCuota (amount, interest, period)
-    listadf=[[payment,interest,amortization,amount]]
-
+    usuario = BuscarPorNumeroTarjeta(list1[0][0])
     cursor = ObtenerCursor()
 
-    for amor in usuario.amortizacion:
+    #InsertarAmortizaciones(tarjeta,payment,interest,amortization,amount,next_30_months[0])
+    for i in range(len(list1)):
         cursor.execute(f"""
     insert into Amortizaciones (
-        cedula_usuario , payment ,  interest ,   amortization ,  balance 
+        cedula_usuario , payment ,  interest ,   amortizacion ,  balance, pay_date 
     )
     values (
-    '{ usuario.cedula }',
-    '{ amor.payment }',
-    '{ amor.interest }',
-    '{ amor.amortization }',
-    '{ amor.balance }'
+    '{ list1[0][0] }',
+    '{ list1[i][1] }',
+    '{ list1[i][2] }',
+    '{ list1[i][3] }',
+    '{ list1[i][4] }',
+    '{ list1[i][5] }'
     )
         """)
     
@@ -209,7 +206,7 @@ def BuscarAmortizaciones( usuario: CreditCard ):
     y las pone en la lista Amortizaciones de una instancia de Usuario
     """
     cursor = ObtenerCursor()
-    cursor.execute(f""" select cedula_usuario , payment ,  interest ,   amortization ,  balance  
+    cursor.execute(f""" select cedula_usuario , payment ,  interest ,   amortization ,  balance ,pay_day 
                    from Amortizaciones where cedula_usuario = '{ usuario.cedula }' """)
     
     lista = cursor.fetchall()
@@ -247,7 +244,7 @@ def Actualizar( usuario : CreditCard ):
     # pero si necesitan commit() para hacer los cambios persistentes
     cursor.connection.commit()
 
-def CalcularCuota(usuario : CreditCard,amount,payment_time):
+def CalcularCuota(tarjeta:str,amount,payment_time):
 
     '''
     It calculates the monthly payment for a purchase amount with a interest rate in a number of periods
@@ -269,6 +266,7 @@ def CalcularCuota(usuario : CreditCard,amount,payment_time):
             Monthly payment calculated. Not rounded / Pago mensual calculado. El resultado no esta redondeado
 
     '''
+    usuario = BuscarPorNumeroTarjeta(tarjeta)
     interest_rate = float(usuario.tasa_interes)
     payment_time = int(payment_time)
 
@@ -323,20 +321,80 @@ def AhorroProgramado( amount,payment_time):
     return math.ceil(math.log(1 + (amount * i / payment)) / math.log(1 + i))
 
 
-
-
 def SumaCuotas(month1 : str,month2 : str):
     #Suma de las cuotas mensuales de cada mes
     
     sql = f"""select * from CreditCards where numero BETWEEN '{month1}' AND '{month2}'
         """
     return sql
+    
+def dataframe_amortization(tarjeta, amount, period, pay_day, deposit=0, month_deposit=0):
 
-'''
-usuario_prueba = CreditCard( "123456", "981273", "Prueba", "avvillas", "2025/06/05", "mastercard", "12", "5000","3.1"  ) 
-usuario_prueba2 = CreditCard(  "45646", "981273", "Prueba2", "bancolombia", "2027/06/05", "visa", "15", "6000","3.4"  )  
+    usuario = BuscarPorNumeroTarjeta(tarjeta)
+    interest = float(usuario.tasa_interes)
 
-Insertar( usuario_prueba )
-Insertar(usuario_prueba2)
+    start_date = date.fromisoformat(pay_day)
+    new_day = int(usuario.pago_mes)
+    start_date = date(start_date.year, start_date.month, new_day)
+    next_30_months = []
+    
+    for _ in range(period):
+        next_30_months.append(start_date)
+        if start_date.month == 12:
+            start_date = date(start_date.year + 1, 1, start_date.day)
+        else:
+            start_date = date(start_date.year, start_date.month + 1, start_date.day)
 
-'''
+    
+    
+    payment = CalcularCuota(tarjeta, amount, period)
+    payment_Cambio = CalcularCuota(tarjeta, amount, period)
+    
+    listadf = []
+    listadf.append([tarjeta, round(payment, 3), interest, 0, round(amount, 3), next_30_months[0]])
+    if deposit != 0:
+        if deposit < payment:
+            raise lowDeposit("The deposit is too low")
+
+    for i in range(period+1):
+        if month_deposit - 1 == i:
+            if deposit > amount:
+                raise paymentLate("The amount paid is too high")
+
+            payment = deposit
+        else:
+            payment = payment_Cambio
+
+        interest_cuota = amount * interest / 100
+        amortization = payment - interest_cuota
+        amount -= amortization
+
+        if amount < payment:
+          listadf.append([tarjeta, round(payment, 3), interest_cuota, round(amortization, 3), round(amount, 3), next_30_months[i]])
+
+          payment =amount + amount*interest/100
+          interest_cuota=amount*interest/100
+          amortization=payment-amount*interest/100
+          amount=amount-payment+interest_cuota
+        
+        listadf.append([tarjeta, round(payment, 3), interest_cuota, round(amortization, 3), round(amount, 3), next_30_months[i]])
+
+        if amount < 1e-3:
+            break
+
+
+    InsertarAmortizaciones(listadf)
+    return 
+
+
+
+#Ejemplificacion.
+#usuario_prueba = CreditCard( "4563", "981273", "Prueba", "avvillas", "2025/06/05", "mastercard", "12", "5000","3.1"  ) 
+#usuario_prueba2 = CreditCard(  "8923", "9812343", "Prueba2", "bancolombia", "2027/06/05", "visa", "15", "6000","2.4"  )  
+
+#Insertar( usuario_prueba )
+#Insertar(usuario_prueba2)
+
+#dataframe_amortization("4563",200000,36,"2001-10-10")
+print(dataframe_amortization("8923",850000,24,"2011-05-07"))
+#'''

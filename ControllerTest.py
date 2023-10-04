@@ -52,6 +52,7 @@ class ControllerTest(unittest.TestCase):
         usuario_prueba = CreditCard( "123456", "981273", "Prueba", "avvillas", "2025/06/05", "mastercard", "12", "5000","3.1"  ) 
         ControladorUsuarios.Insertar( usuario_prueba )
         # Buscamos el usuario
+        
         usuario_buscado = ControladorUsuarios.BuscarPorNumeroTarjeta( usuario_prueba.numero )
         # Verificamos que los datos del usuario sean correcto
         usuario_prueba.esIgual( usuario_buscado )
@@ -111,7 +112,7 @@ class ControllerTest(unittest.TestCase):
         # Test to see if 2 variables are equal
         ControladorUsuarios.Insertar( tarjeta1 )
 
-        result = ControladorUsuarios.CalcularCuota(tarjeta1,amount,payment_time)
+        result = ControladorUsuarios.CalcularCuota(tarjeta1.numero,amount,payment_time)
         self.assertEqual( cuota, round(result,2))
 
     def testPayment2(self):
@@ -121,7 +122,7 @@ class ControllerTest(unittest.TestCase):
         cuota = 52377.5
         ControladorUsuarios.Insertar( tarjeta1 )
 
-        result = ControladorUsuarios.CalcularCuota(tarjeta1,amount,payment_time)
+        result = ControladorUsuarios.CalcularCuota(tarjeta1.numero,amount,payment_time)
         self.assertEqual( cuota, round(result,2))
 
 
@@ -133,7 +134,7 @@ class ControllerTest(unittest.TestCase):
         cuota = 10000
 
         ControladorUsuarios.Insertar( tarjeta1 )
-        result = ControladorUsuarios.CalcularCuota(tarjeta1,amount,payment_time)
+        result = ControladorUsuarios.CalcularCuota(tarjeta1.numero,amount,payment_time)
         self.assertEqual( cuota, round(result,2))
  
     
@@ -145,7 +146,7 @@ class ControllerTest(unittest.TestCase):
         cuota = 0
         
         ControladorUsuarios.Insertar( tarjeta1 )
-        result = ControladorUsuarios.CalcularCuota(tarjeta1,amount,payment_time)
+        result = ControladorUsuarios.CalcularCuota(tarjeta1.numero,amount,payment_time)
         self.assertEqual( cuota, round(result,2))
 
 
@@ -157,7 +158,7 @@ class ControllerTest(unittest.TestCase):
         cuota = 0
         
         ControladorUsuarios.Insertar( tarjeta1 )
-        result = ControladorUsuarios.CalcularCuota(tarjeta1,amount,payment_time)
+        result = ControladorUsuarios.CalcularCuota(tarjeta1.numero,amount,payment_time)
         self.assertEqual( cuota, round(result,2))
 
     def testPayment6(self):
@@ -168,7 +169,7 @@ class ControllerTest(unittest.TestCase):
         cuota = 0
 
         ControladorUsuarios.Insertar( tarjeta1 )
-        result = ControladorUsuarios.CalcularCuota(tarjeta1,amount,payment_time)
+        result = ControladorUsuarios.CalcularCuota(tarjeta1.numeroamount,payment_time)
         self.assertEqual( cuota, round(result,2))
 
     def testPayment7(self):
@@ -179,7 +180,7 @@ class ControllerTest(unittest.TestCase):
         cuota = 0
         
         ControladorUsuarios.Insertar( tarjeta1 )
-        result = ControladorUsuarios.CalcularCuota(tarjeta1,amount,payment_time)
+        result = ControladorUsuarios.CalcularCuota(tarjeta1.numero,amount,payment_time)
         self.assertEqual( cuota, round(result,2))
 
     def testAhorroProgramado(self):
