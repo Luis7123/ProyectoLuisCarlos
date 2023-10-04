@@ -206,15 +206,15 @@ def BuscarAmortizaciones( usuario: CreditCard ):
     y las pone en la lista Amortizaciones de una instancia de Usuario
     """
     cursor = ObtenerCursor()
-    cursor.execute(f""" select cedula_usuario , payment ,  interest ,   amortization ,  balance ,pay_day 
-                   from Amortizaciones where cedula_usuario = '{ usuario.cedula }' """)
-    
+    cursor.execute(f""" select cedula_usuario , payment ,  interest ,   amortization ,  balance ,pay_date 
+                   from Amortizaciones where cedula_usuario = '{ usuario.numero }' """)
+    ######--------------------------------------------------------Numero a cambiar
     lista = cursor.fetchall()
 
     # Si la consulta no retorna, es porque el usuario no tiene familiares
     if lista is None or lista.__len__ == 0:
         return
-    
+    ######-------------------------------------------------------- puede que sea necesario
     for fila in lista:
         usuario.agregarAmortizacion( fila[1], fila[2], fila[3], fila[4] )
 
@@ -251,12 +251,11 @@ def CalcularCuota(tarjeta:str,amount,payment_time):
 
     Parameters
         ----------
-
+        tarjeta : str
+            the card number / Numero de la tarjeta para la compra
         amount : float
             Purchase amount / Valor de la compra
-        interest : float
-            Monthly interest rate for purchase. Must be zero or positive less than
-            MAX_INTEREST_RATE / Tasa maxima de interes, valor positivo menor que MAX_INTEREST_RATE
+       
         periods : int
             Number of monthly payments / Numero de cuotas a diferir la compra
 
@@ -324,7 +323,7 @@ def AhorroProgramado( amount,payment_time):
 def SumaCuotas(month1 : str,month2 : str):
     #Suma de las cuotas mensuales de cada mes
     
-    sql = f"""select * from CreditCards where numero BETWEEN '{month1}' AND '{month2}'
+    sql = f"""select * from Amortizaciones where pay_date BETWEEN '2011-09-15' AND '2012-10-15'
         """
     return sql
     
