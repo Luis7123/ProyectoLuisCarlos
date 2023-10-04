@@ -251,12 +251,11 @@ def CalcularCuota(tarjeta:str,amount,payment_time):
 
     Parameters
         ----------
-
+        tarjeta : str
+            the card number / Numero de la tarjeta para la compra
         amount : float
             Purchase amount / Valor de la compra
-        interest : float
-            Monthly interest rate for purchase. Must be zero or positive less than
-            MAX_INTEREST_RATE / Tasa maxima de interes, valor positivo menor que MAX_INTEREST_RATE
+       
         periods : int
             Number of monthly payments / Numero de cuotas a diferir la compra
 
