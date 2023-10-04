@@ -214,7 +214,7 @@ def BuscarAmortizaciones( usuario: CreditCard ):
     # Si la consulta no retorna, es porque el usuario no tiene familiares
     if lista is None or lista.__len__ == 0:
         return
-    ######-------------------------------------------------------- esto de agregarAmortizacion no sera necesario.
+    ######-------------------------------------------------------- puede que sea necesario
     for fila in lista:
         usuario.agregarAmortizacion( fila[1], fila[2], fila[3], fila[4] )
 
