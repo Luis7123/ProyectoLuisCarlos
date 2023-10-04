@@ -206,15 +206,15 @@ def BuscarAmortizaciones( usuario: CreditCard ):
     y las pone en la lista Amortizaciones de una instancia de Usuario
     """
     cursor = ObtenerCursor()
-    cursor.execute(f""" select cedula_usuario , payment ,  interest ,   amortization ,  balance ,pay_day 
-                   from Amortizaciones where cedula_usuario = '{ usuario.cedula }' """)
-    
+    cursor.execute(f""" select cedula_usuario , payment ,  interest ,   amortization ,  balance ,pay_date 
+                   from Amortizaciones where cedula_usuario = '{ usuario.numero }' """)
+    ######--------------------------------------------------------Numero a cambiar
     lista = cursor.fetchall()
 
     # Si la consulta no retorna, es porque el usuario no tiene familiares
     if lista is None or lista.__len__ == 0:
         return
-    
+    ######-------------------------------------------------------- esto de agregarAmortizacion no sera necesario.
     for fila in lista:
         usuario.agregarAmortizacion( fila[1], fila[2], fila[3], fila[4] )
 
