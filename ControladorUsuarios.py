@@ -345,8 +345,7 @@ def dataframe_amortization(tarjeta, amount, period, pay_day, deposit=0, month_de
         else:
             start_date = date(start_date.year, start_date.month + 1, start_date.day)
 
-    
-    
+
     payment = CalcularCuota(tarjeta, amount, period)
     payment_Cambio = CalcularCuota(tarjeta, amount, period)
     
@@ -396,5 +395,5 @@ def dataframe_amortization(tarjeta, amount, period, pay_day, deposit=0, month_de
 #Insertar(usuario_prueba2)
 
 #dataframe_amortization("4563",200000,36,"2001-10-10")
-print(dataframe_amortization("8923",850000,24,"2011-05-07"))
+#dataframe_amortization("8923",850000,24,"2011-05-07")
 #'''
