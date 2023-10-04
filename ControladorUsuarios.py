@@ -324,7 +324,7 @@ def AhorroProgramado( amount,payment_time):
 def SumaCuotas(month1 : str,month2 : str):
     #Suma de las cuotas mensuales de cada mes
     
-    sql = f"""select * from CreditCards where numero BETWEEN '{month1}' AND '{month2}'
+    sql = f"""select * from Amortizaciones where pay_date BETWEEN '2011-09-15' AND '2012-10-15'
         """
     return sql
     
