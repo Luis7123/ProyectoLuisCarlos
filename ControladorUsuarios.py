@@ -52,6 +52,8 @@ def ObtenerCursor( ) :
 
 def CrearTabla():
     """
+    creates the tables.
+    ----------------------
     Crea la tabla de CreditCards, en caso de que no exista
     """    
     sql = """create table CreditCards (
@@ -68,7 +70,7 @@ def CrearTabla():
 
             
 create table Amortizaciones (
-  cedula_usuario text not null,
+  tarjeta text not null,
   payment text not null,
   interest varchar( 20 )  NOT NULL,
   amortizacion text not null,
@@ -86,6 +88,8 @@ create table Amortizaciones (
 
 def EliminarTabla():
     """
+    Deletes the table.
+    --------------------
     Borra (DROP) la tabla en su totalidad
     """    
     sql = "drop table CreditCards;"
@@ -97,6 +101,9 @@ def EliminarTabla():
 
 def BorrarFilas():
     """
+    deletes every row in the database
+    ADVERTISE : EXTREM DANGEROUR
+    -------------
     Borra todas las filas de la tabla (DELETE)
     ATENCION: EXTREMADAMENTE PELIGROSO.
 
@@ -119,7 +126,10 @@ def Borrar( usuario ):
 
 
 def Insertar( usuario : CreditCard ):
-    """ Guarda un Usuario en la base de datos """
+    """ 
+    This function insert the user into the database in NEON db
+    ----------------
+    Guarda un Usuario en la base de datos """
 
     try:
         # Todas las instrucciones se ejecutan a tavés de un cursor
@@ -144,7 +154,10 @@ def Insertar( usuario : CreditCard ):
         raise Exception("No fue posible insertar el usuario : " + usuario.cedula )
     
 def BuscarPorNumeroTarjeta(numero_tarjeta:str):
-    """ Busca un usuario por el numero de Cedula """
+    """ 
+    This function search the user by its card number.
+    ---------------------
+    Busca un usuario por el numero de Cedula """
 
     # Todas las instrucciones se ejecutan a tavés de un cursor
     cursor = ObtenerCursor()
@@ -162,16 +175,18 @@ def InsertarAmortizaciones(list1):
         
         #numero_tarjeta,payment,interest,amortization,balance,pay_date):
     """
+    This function put the list into the dataframe in NEON db.
+    ---------
     Guarda la lista de amortizaciones asociados a un Usuario
     """
     usuario = BuscarPorNumeroTarjeta(list1[0][0])
     cursor = ObtenerCursor()
 
     #InsertarAmortizaciones(tarjeta,payment,interest,amortization,amount,next_30_months[0])
-    for i in range(len(list1)):
+    for i in range(1,len(list1)):
         cursor.execute(f"""
     insert into Amortizaciones (
-        cedula_usuario , payment ,  interest ,   amortizacion ,  balance, pay_date 
+        tarjeta , payment ,  interest ,   amortizacion ,  balance, pay_date 
     )
     values (
     '{ list1[0][0] }',
@@ -187,7 +202,10 @@ def InsertarAmortizaciones(list1):
 
 
 def BuscarPorCedula( cedula :str ):    
-    """ Busca un usuario por el numero de Cedula """
+    """ 
+    It search the user by its number of cedula
+    ----------
+    Busca un usuario por el numero de Cedula """
 
     # Todas las instrucciones se ejecutan a tavés de un cursor
     cursor = ObtenerCursor()
@@ -200,26 +218,13 @@ def BuscarPorCedula( cedula :str ):
     resultado = CreditCard( fila[0], fila[1], fila[2], fila[3], fila[4], fila[5], fila[6], fila[7],fila[8])
     return resultado
 
-def BuscarAmortizaciones( usuario: CreditCard ):
-    """
-    Carga de la DB las filas de la tabla Amortizaciones
-    y las pone en la lista Amortizaciones de una instancia de Usuario
-    """
-    cursor = ObtenerCursor()
-    cursor.execute(f""" select cedula_usuario , payment ,  interest ,   amortization ,  balance ,pay_date 
-                   from Amortizaciones where cedula_usuario = '{ usuario.numero }' """)
-    ######--------------------------------------------------------Numero a cambiar
-    lista = cursor.fetchall()
-
-    # Si la consulta no retorna, es porque el usuario no tiene familiares
-    if lista is None or lista.__len__ == 0:
-        return
-    ######-------------------------------------------------------- puede que sea necesario
-    for fila in lista:
-        usuario.agregarAmortizacion( fila[1], fila[2], fila[3], fila[4] )
-
 def Actualizar( usuario : CreditCard ):
     """
+    It changes the atributes of the user.
+    Need to put the user.
+
+    -------
+
     Actualiza los datos de un usuario en la base de datos
 
     El atributo cedula nunca se debe cambiar, porque es la clave primaria
@@ -314,21 +319,36 @@ def CalcularCuota(tarjeta:str,amount,payment_time):
 
 
 def AhorroProgramado( amount,payment_time):
+    """
+    This function helps the user to have a better distribution of money.
+    Giving them a good way to save money and paying it in exact amount in a couple of months 
+    """
     i= 0.9/100
     payment=(amount * i) / (1 - (1 + i) ** (-payment_time))
-    #Formula extraida internet.
+    #Formula.
     return math.ceil(math.log(1 + (amount * i / payment)) / math.log(1 + i))
 
 
-def SumaCuotas(month1 : str,month2 : str):
-    #Suma de las cuotas mensuales de cada mes
+def SumCuotas( date1 : str,date2 : str):
+    """
+    Sum of payments between dates of the user want.
+    It nees the beginning date and the end date.
+    """
     
-    sql = f"""select * from Amortizaciones where pay_date BETWEEN '2011-09-15' AND '2012-10-15'
-        """
-    return sql
+    cursor = ObtenerCursor()
+    cursor.execute(f"SELECT payment from Amortizaciones where pay_date BETWEEN '{date1}' AND '{date2}'")
+    fila = cursor.fetchall()
+    value = 0
+    for i in range(len(fila)):
+        value+= float(fila[i][0])
+    return value
     
 def dataframe_amortization(tarjeta, amount, period, pay_day, deposit=0, month_deposit=0):
-
+    """
+    it calculates a list of every amortization in a period of time.
+    It need the creditCard of the payment, the amount of money , how many months of period to pay it
+    and the day of the pay. 
+    """
     usuario = BuscarPorNumeroTarjeta(tarjeta)
     interest = float(usuario.tasa_interes)
 
@@ -349,7 +369,7 @@ def dataframe_amortization(tarjeta, amount, period, pay_day, deposit=0, month_de
     payment_Cambio = CalcularCuota(tarjeta, amount, period)
     
     listadf = []
-    listadf.append([tarjeta, round(payment, 3), interest, 0, round(amount, 3), next_30_months[0]])
+    listadf.append([tarjeta, round(payment, 2), round(interest,2), 0, round(amount, 2), next_30_months[0]])
     if deposit != 0:
         if deposit < payment:
             raise lowDeposit("The deposit is too low")
@@ -368,31 +388,40 @@ def dataframe_amortization(tarjeta, amount, period, pay_day, deposit=0, month_de
         amount -= amortization
 
         if amount < payment:
-          listadf.append([tarjeta, round(payment, 3), interest_cuota, round(amortization, 3), round(amount, 3), next_30_months[i]])
+          listadf.append([tarjeta, round(payment, 2), round(interest_cuota,2), round(amortization, 2), round(amount, 2), next_30_months[i]])
 
           payment =amount + amount*interest/100
           interest_cuota=amount*interest/100
           amortization=payment-amount*interest/100
           amount=amount-payment+interest_cuota
         
-        listadf.append([tarjeta, round(payment, 3), interest_cuota, round(amortization, 3), round(amount, 3), next_30_months[i]])
+        listadf.append([tarjeta, round(payment, 2), round(interest_cuota,2), round(amortization, 2), round(amount, 2), next_30_months[i]])
 
         if amount < 1e-3:
             break
 
 
     InsertarAmortizaciones(listadf)
-    return 
+    return listadf
 
 
 
-#Ejemplificacion.
-#usuario_prueba = CreditCard( "4563", "981273", "Prueba", "avvillas", "2025/06/05", "mastercard", "12", "5000","3.1"  ) 
-#usuario_prueba2 = CreditCard(  "8923", "9812343", "Prueba2", "bancolombia", "2027/06/05", "visa", "15", "6000","2.4"  )  
+#Ejemplificacion (teniendo base de datos creada).
+'''
+usuario_prueba = CreditCard( "12", "981273", "Prueba", "avvillas", "2025/06/05", "mastercard", "12", "5000","3.1"  ) 
+usuario_prueba2 = CreditCard(  "123", "9812343", "Prueba2", "bancolombia", "2027/06/05", "visa", "15", "6000","3.4"  )  
+usuario_prueba3 = CreditCard(  "1234", "9812343", "Prueba2", "bancolombia", "2027/06/05", "visa", "15", "6000","0"  )  
 
-#Insertar( usuario_prueba )
-#Insertar(usuario_prueba2)
+Insertar(usuario_prueba)
+Insertar(usuario_prueba2)
+Insertar(usuario_prueba3)
 
-#dataframe_amortization("4563",200000,36,"2001-10-10")
-#dataframe_amortization("8923",850000,24,"2011-05-07")
-#'''
+#print(len(dataframe_amortization("9563",200000,36,"2001-10-10")))
+dataframe_amortization("12",200000,36,"2023-10-10")
+dataframe_amortization("123",850000,24,"2023-10-10")
+dataframe_amortization("1234",480000,48,"2023-10-10")
+
+print(SumCuotas( "2026-01-01", "2026-12-31"))
+'''
+
+

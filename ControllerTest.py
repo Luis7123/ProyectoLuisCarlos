@@ -1,6 +1,7 @@
 
 # Todas las prueba sunitarias importan la biblioteca unittest
 import unittest
+import csv
 
 from CreditCard import CreditCard
 
@@ -215,7 +216,120 @@ class ControllerTest(unittest.TestCase):
         result = ControladorUsuarios.AhorroProgramado(amount,payment_time)
         self.assertEqual( MesesAhorro,result)
 
+    def testAmortizaciones(self):
+        with open("..\Archivos_csv\caso1.csv", mode='r', encoding='utf8') as f:
+            contenido = f.read()
+        a=contenido.split("\n")
+        newlist=[]
+        for i in range(len(a)):
+            newlist.append(a[i].split(","))
 
+        usuario_prueba = CreditCard( "9563", "981273", "Prueba", "avvillas", "2025/06/05", "mastercard", "12", "5000","3.1"  ) 
+        ControladorUsuarios.Insertar( usuario_prueba )
+        TestList = ControladorUsuarios.dataframe_amortization("9563",200000,36,"2001-10-10")
+
+        assert(len(newlist) == len(TestList))
+
+        newlist =newlist[1::]
+        TestList  = TestList[1::]
+        for i in range(len(newlist)):
+            for j in range(3):
+                assert(float(newlist[i][j+1]) == TestList[i][j+1])
+    
+    def testAmortizaciones2(self):
+        with open("..\Archivos_csv\caso2.csv", mode='r', encoding='utf8') as f:
+            contenido = f.read()
+        a=contenido.split("\n")
+        newlist=[]
+        for i in range(len(a)):
+            newlist.append(a[i].split(","))
+
+        usuario_prueba = CreditCard( "563", "981273", "Prueba", "avvillas", "2025/06/05", "mastercard", "12", "5000","3.4"  ) 
+        ControladorUsuarios.Insertar( usuario_prueba )
+        TestList = ControladorUsuarios.dataframe_amortization("563",850000,24,"2001-10-10")
+
+        assert(len(newlist) == len(TestList))
+
+        newlist =newlist[1::]
+        TestList  = TestList[1::]
+        for i in range(len(newlist)):
+            for j in range(3):
+                assert(float(newlist[i][j+1]) == TestList[i][j+1])
+
+    def testAmortizaciones3(self):
+        with open("..\Archivos_csv\caso3.csv", mode='r', encoding='utf8') as f:
+            contenido = f.read()
+        a=contenido.split("\n")
+        newlist=[]
+        for i in range(len(a)):
+            newlist.append(a[i].split(","))
+
+        usuario_prueba = CreditCard( "345", "981273", "Prueba", "avvillas", "2025/06/05", "mastercard", "12", "5000","0"  ) 
+        ControladorUsuarios.Insertar( usuario_prueba )
+        TestList = ControladorUsuarios.dataframe_amortization("345",480000,48,"2001-10-10")
+
+
+        newlist =newlist[1::]
+        TestList  = TestList[1::]
+        for i in range(len(newlist)):
+            for j in range(3):
+                assert(float(newlist[i][j+1]) == TestList[i][j+1])
+    def testSumPayments(self):
+        usuario_prueba = CreditCard( "12", "981273", "Prueba", "avvillas", "2025/06/05", "mastercard", "12", "5000","3.1"  ) 
+        usuario_prueba2 = CreditCard(  "123", "9812343", "Prueba2", "bancolombia", "2027/06/05", "visa", "15", "6000","3.4"  )  
+        usuario_prueba3 = CreditCard(  "1234", "9812343", "Prueba2", "bancolombia", "2027/06/05", "visa", "15", "6000","0"  )  
+
+        ControladorUsuarios.Insertar(usuario_prueba)
+        ControladorUsuarios.Insertar(usuario_prueba2)
+        ControladorUsuarios.Insertar(usuario_prueba3)
+
+        #print(len(dataframe_amortization("9563",200000,36,"2001-10-10")))
+        ControladorUsuarios.dataframe_amortization("12",200000,36,"2023-10-10")
+        ControladorUsuarios.dataframe_amortization("123",850000,24,"2023-10-10")
+        ControladorUsuarios.dataframe_amortization("1234",480000,48,"2023-10-10")
+
+        value = ControladorUsuarios.SumCuotas( "2023-10-01", "2023-10-31")
+        result = 71675.45999999999
+
+        assert(value ==result)
+    
+    def testSumPayments2(self):
+        usuario_prueba = CreditCard( "12", "981273", "Prueba", "avvillas", "2025/06/05", "mastercard", "12", "5000","3.1"  ) 
+        usuario_prueba2 = CreditCard(  "123", "9812343", "Prueba2", "bancolombia", "2027/06/05", "visa", "15", "6000","3.4"  )  
+        usuario_prueba3 = CreditCard(  "1234", "9812343", "Prueba2", "bancolombia", "2027/06/05", "visa", "15", "6000","0"  )  
+
+        ControladorUsuarios.Insertar(usuario_prueba)
+        ControladorUsuarios.Insertar(usuario_prueba2)
+        ControladorUsuarios.Insertar(usuario_prueba3)
+
+        #print(len(dataframe_amortization("9563",200000,36,"2001-10-10")))
+        ControladorUsuarios.dataframe_amortization("12",200000,36,"2023-10-10")
+        ControladorUsuarios.dataframe_amortization("123",850000,24,"2023-10-10")
+        ControladorUsuarios.dataframe_amortization("1234",480000,48,"2023-10-10")
+
+        value = ControladorUsuarios.SumCuotas( "2023-10-01", "2023-12-31")
+        result = 215026.38
+
+        assert(value ==result)
+    
+    def testSumPayments3(self):
+        usuario_prueba = CreditCard( "12", "981273", "Prueba", "avvillas", "2025/06/05", "mastercard", "12", "5000","3.1"  ) 
+        usuario_prueba2 = CreditCard(  "123", "9812343", "Prueba2", "bancolombia", "2027/06/05", "visa", "15", "6000","3.4"  )  
+        usuario_prueba3 = CreditCard(  "1234", "9812343", "Prueba2", "bancolombia", "2027/06/05", "visa", "15", "6000","0"  )  
+
+        ControladorUsuarios.Insertar(usuario_prueba)
+        ControladorUsuarios.Insertar(usuario_prueba2)
+        ControladorUsuarios.Insertar(usuario_prueba3)
+
+        #print(len(dataframe_amortization("9563",200000,36,"2001-10-10")))
+        ControladorUsuarios.dataframe_amortization("12",200000,36,"2023-10-10")
+        ControladorUsuarios.dataframe_amortization("123",850000,24,"2023-10-10")
+        ControladorUsuarios.dataframe_amortization("1234",480000,48,"2023-10-10")
+
+        value = ControladorUsuarios.SumCuotas( "2026-01-01", "2026-12-31")
+        result = 203681.63999999998
+
+        assert(value ==result)
 # Este fragmento de codigo permite ejecutar la prueb individualmente
 # Va fijo en todas las pruebas
 if __name__ == '__main__':
