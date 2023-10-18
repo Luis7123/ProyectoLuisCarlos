@@ -318,7 +318,7 @@ def CalcularCuota(tarjeta:str,amount,payment_time):
         return (payment)
 
 
-def AhorroProgramado( amount,payment_time):
+def AhorroProgramado( amount,payment_time,interest_rate=0):
     """
     This function helps the user to have a better distribution of money.
     Giving them a good way to save money and paying it in exact amount in a couple of months 
@@ -343,7 +343,7 @@ def SumCuotas( date1 : str,date2 : str):
         value+= float(fila[i][0])
     return value
     
-def dataframe_amortization(tarjeta, amount, period, pay_day, deposit=0, month_deposit=0):
+def dataframe_amortization(tarjeta, amount, period, pay_day, deposit=0, month_deposit=0,x=0):
     """
     it calculates a list of every amortization in a period of time.
     It need the creditCard of the payment, the amount of money , how many months of period to pay it
@@ -400,8 +400,9 @@ def dataframe_amortization(tarjeta, amount, period, pay_day, deposit=0, month_de
         if amount < 1e-3:
             break
 
+    if x == 0:
+        InsertarAmortizaciones(listadf)
 
-    InsertarAmortizaciones(listadf)
     return listadf
 
 
@@ -417,11 +418,13 @@ Insertar(usuario_prueba2)
 Insertar(usuario_prueba3)
 
 #print(len(dataframe_amortization("9563",200000,36,"2001-10-10")))
-dataframe_amortization("12",200000,36,"2023-10-10")
+a = dataframe_amortization("12",200000,36,"2023-10-10")
 dataframe_amortization("123",850000,24,"2023-10-10")
 dataframe_amortization("1234",480000,48,"2023-10-10")
-
-print(SumCuotas( "2026-01-01", "2026-12-31"))
 '''
-
-
+#a = dataframe_amortization("12",200000,39,"2023-10-10")
+#b = [a[i][3] for i in range(len(a))]
+#b=[a[][]for i in range]
+#print(b)
+#print(sum(b))
+#print(BuscarPorCedula("981273").cedula)

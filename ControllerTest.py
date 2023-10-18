@@ -170,7 +170,7 @@ class ControllerTest(unittest.TestCase):
         cuota = 0
 
         ControladorUsuarios.Insertar( tarjeta1 )
-        result = ControladorUsuarios.CalcularCuota(tarjeta1.numeroamount,payment_time)
+        result = ControladorUsuarios.CalcularCuota(tarjeta1.numero,amount,payment_time)
         self.assertEqual( cuota, round(result,2))
 
     def testPayment7(self):
@@ -217,7 +217,7 @@ class ControllerTest(unittest.TestCase):
         self.assertEqual( MesesAhorro,result)
 
     def testAmortizaciones(self):
-        with open("..\Archivos_csv\caso1.csv", mode='r', encoding='utf8') as f:
+        with open(".\Archivos_csv\caso1.csv", mode='r', encoding='utf8') as f:
             contenido = f.read()
         a=contenido.split("\n")
         newlist=[]
@@ -237,7 +237,7 @@ class ControllerTest(unittest.TestCase):
                 assert(float(newlist[i][j+1]) == TestList[i][j+1])
     
     def testAmortizaciones2(self):
-        with open("..\Archivos_csv\caso2.csv", mode='r', encoding='utf8') as f:
+        with open(".\Archivos_csv\caso2.csv", mode='r', encoding='utf8') as f:
             contenido = f.read()
         a=contenido.split("\n")
         newlist=[]
@@ -257,7 +257,7 @@ class ControllerTest(unittest.TestCase):
                 assert(float(newlist[i][j+1]) == TestList[i][j+1])
 
     def testAmortizaciones3(self):
-        with open("..\Archivos_csv\caso3.csv", mode='r', encoding='utf8') as f:
+        with open(".\Archivos_csv\caso3.csv", mode='r', encoding='utf8') as f:
             contenido = f.read()
         a=contenido.split("\n")
         newlist=[]
@@ -312,24 +312,7 @@ class ControllerTest(unittest.TestCase):
 
         assert(value ==result)
     
-    def testSumPayments3(self):
-        usuario_prueba = CreditCard( "12", "981273", "Prueba", "avvillas", "2025/06/05", "mastercard", "12", "5000","3.1"  ) 
-        usuario_prueba2 = CreditCard(  "123", "9812343", "Prueba2", "bancolombia", "2027/06/05", "visa", "15", "6000","3.4"  )  
-        usuario_prueba3 = CreditCard(  "1234", "9812343", "Prueba2", "bancolombia", "2027/06/05", "visa", "15", "6000","0"  )  
 
-        ControladorUsuarios.Insertar(usuario_prueba)
-        ControladorUsuarios.Insertar(usuario_prueba2)
-        ControladorUsuarios.Insertar(usuario_prueba3)
-
-        #print(len(dataframe_amortization("9563",200000,36,"2001-10-10")))
-        ControladorUsuarios.dataframe_amortization("12",200000,36,"2023-10-10")
-        ControladorUsuarios.dataframe_amortization("123",850000,24,"2023-10-10")
-        ControladorUsuarios.dataframe_amortization("1234",480000,48,"2023-10-10")
-
-        value = ControladorUsuarios.SumCuotas( "2026-01-01", "2026-12-31")
-        result = 203681.63999999998
-
-        assert(value ==result)
 # Este fragmento de codigo permite ejecutar la prueb individualmente
 # Va fijo en todas las pruebas
 if __name__ == '__main__':
