@@ -37,19 +37,19 @@ def usuario():
     # Ejemplo de uso:
 
 # Prueba mia
-# http://localhost:5000/api/card/new?numero=6549879&cedula=1235&nombre=prueba&banco=avvillas&fecha_de_vencimiento=19-10-2023&franquicia=mastercard&pago_mes=13&cuota_manejo=6700&tasa_interes=3.1
+# http://localhost:5000/api/card/new?card_number=6549879&owner_id=1235&owner_name=prueba&bank_name=avvillas&due_date=19-10-2023&franchise=mastercard&payment_day=13&monthly_fee=6700&interest_rate=3.1
 @app.route("/api/card/new")
 def crearUsuario():
     try:
-        numero = request.args["numero"]
-        cedula = request.args["cedula"]
-        nombre = request.args["nombre"]
-        banco = request.args["banco"]
-        fecha_de_vencimiento = request.args["fecha_de_vencimiento"]
-        franquicia = request.args["franquicia"]
-        pago_mes =  request.args["pago_mes"]
-        cuota_manejo = request.args["cuota_manejo"]
-        tasa_interes = request.args["tasa_interes"]
+        numero = request.args["card_number"]
+        cedula = request.args["owner_id"]
+        nombre = request.args["owner_name"]
+        banco = request.args["bank_name"]
+        fecha_de_vencimiento = request.args["due_date"]
+        franquicia = request.args["franchise"]
+        pago_mes = request.args["payment_day"]
+        cuota_manejo = request.args["monthly_fee"]
+        tasa_interes = request.args["interest_rate"]
 
         usuario = CreditCard(numero,cedula, nombre, banco, fecha_de_vencimiento, franquicia, pago_mes,cuota_manejo,tasa_interes)
         ControladorUsuarios.Insertar(usuario)
@@ -81,7 +81,7 @@ def purchase_1():
         return {"status": "error", "mensaje": "La peticion no se puede completar", "error": str(err)}
 
 
-#http://localhost:5000/api/simulate/saving?purchase_amount=200000&monthly_payments=24&interest_rate=3.1
+#q
 @app.route("/api/simulate/saving")
 def savigs():
     try:
