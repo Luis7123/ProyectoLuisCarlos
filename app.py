@@ -37,7 +37,7 @@ def usuario():
     # Ejemplo de uso:
 
 # Prueba mia
-# http://localhost:5000/api/card/new?card_number=6549879&owner_id=1235&owner_name=prueba&bank_name=avvillas&due_date=19-10-2023&franchise=mastercard&payment_day=13&monthly_fee=6700&interest_rate=3.1
+# http://localhost:5000/api/card/new?card_number=6549879&owner_id=1235&owner_name=prueba&bank_name=avvillas&due_date=19-10-2023&franchise=mastercard&payment_day=13&monthly_fee=6700&interest_rate=3.1 
 @app.route("/api/card/new")
 def crearUsuario():
     try:
@@ -81,7 +81,7 @@ def purchase_1():
         return {"status": "error", "mensaje": "La peticion no se puede completar", "error": str(err)}
 
 
-#q
+#http://localhost:5000/api/simulate/saving?purchase_amount=200000&monthly_payments=24&interest_rate=3.1
 @app.route("/api/simulate/saving")
 def savigs():
     try:
@@ -114,3 +114,5 @@ def insert_df():
 
 if __name__ == '__main__':
     app.run(debug=True)
+
+
