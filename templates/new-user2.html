@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Crear una nueva Credit card</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f5f5f5;
+        }
+
+        h1 {
+            color: #007BFF;
+        }
+
+        p {
+            font-size: 18px;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 20px;
+        }
+
+        label {
+            font-weight: bold;
+        }
+
+        input {
+            padding: 5px;
+            margin: 5px;
+            border: 1px solid #007BFF;
+            border-radius: 5px;
+            width: 300px;
+        }
+
+        input[type="submit"] {
+            background-color: #007BFF;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Crear nueva Credit Card de la EPS</h1>
+    <p>Ingrese los datos de la tarjeta que desee guardar</p>
+    <form action="/api/card/new">
+        <div>
+            <label for="card_number">Card Number:</label>
+            <input type="text" name="card_number" id="card_number" />
+        </div>
+
+        <div>
+            <label for="owner_id">Owner ID:</label>
+            <input type="text" name="owner_id" id="owner_id" />
+        </div>
+
+        <div>
+            <label for="owner_name">Owner Name:</label>
+            <input type="text" name="owner_name" id="owner_name" />
+        </div>
+
+        <div>
+            <label for="bank_name">Bank Name:</label>
+            <input type="text" name="bank_name" id="bank_name" />
+        </div>
+
+        <div>
+            <label for="due_date">Due Date:</label>
+            <input type="date" name="due_date" id="due_date" />
+        </div>
+
+        <div>
+            <label for="franchise">Franchise:</label>
+            <input type="text" name="franchise" id="franchise" />
+        </div>
+
+        <div>
+            <label for="payment_day">Payment Day:</label>
+            <input type="text" name="payment_day" id="payment_day" />
+        </div>
+
+        <div>
+            <label for="monthly_fee">Monthly Fee:</label>
+            <input type="text" name="monthly_fee" id="monthly_fee" />
+        </div>
+
+        <div>
+            <label for="interest_rate">Interest Rate:</label>
+            <input type="text" name="interest_rate" id="interest_rate" />
+        </div>
+
+        <input type="submit" value="Guardar" />
+
+    </form>
+</body>
+
+</html>

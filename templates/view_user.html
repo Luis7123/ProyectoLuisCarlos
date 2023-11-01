@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Usuario Creado Exitosamente</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f5f5f5;
+        }
+
+        h1 {
+            color: #007BFF;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 50%;
+            margin: 0 auto;
+            margin-top: 20px;
+        }
+
+        th, td {
+            border: 1px solid #007BFF;
+            padding: 10px;
+        }
+
+        th {
+            background-color: #007BFF;
+            color: #fff;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Usuario creado exitosamente </h1>
+    <table>
+        <tr>
+            <th>Concepto</th>
+            <th>Valor</th>
+        </tr>
+        <tr>
+            <td>card_number</td>
+            <td>{{user.numero}}</td>
+        </tr>
+        <tr>
+            <td>owner_id</td>
+            <td>{{user.cedula}}</td>
+        </tr>
+
+        <tr>
+            <td>owner_name</td>
+            <td>{{user.nombre}}</td>
+        </tr>
+
+        <tr>
+            <td>bank_name</td>
+            <td>{{user.banco}}</td>
+        </tr>
+
+        <tr>
+            <td>due_date</td>
+            <td>{{user.fecha_de_vencimiento}}</td>
+        </tr>
+
+        <tr>
+            <td>franchise</td>
+            <td>{{user.franquicia}}</td>
+        </tr>
+
+        <tr>
+            <td>payment_day</td>
+            <td>{{user.pago_mes}}</td>
+        </tr>
+
+         <tr>
+            <td>monthly_fee</td>
+            <td>{{user.cuota_manejo}}</td>
+        </tr>
+
+        <tr>
+            <td>interest_rate</td>
+            <td>{{user.tasa_interes}}</td>
+        </tr>
+    </table>
+</body>
+</html>
+
