@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Menú de Opciones</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            text-align: center;
+        }
+        h1 {
+            color: #333;
+        }
+        .menu {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .menu button {
+            padding: 10px 20px;
+            margin: 10px;
+            font-size: 18px;
+            background-color: #007BFF;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .menu button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <h1>Menú de Opciones</h1>
+    <div class="menu">
+        <button onclick="location.href='/api/new-user'">Registrar una tarjeta de crédito</button>
+        <button onclick="location.href='/new_purchase'">Simular una compra</button>
+        <button onclick="location.href='link_ahorro_programado.html'">Ahorro programado sugerido</button>
+        <button onclick="location.href='link_registro_compra.html'">Registrar compra</button>
+        <button onclick="location.href='link_programacion_pagos.html'">Programación de pagos</button>
+    </div>
+</body>
+</html>
