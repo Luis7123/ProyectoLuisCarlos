@@ -39,22 +39,17 @@ def usuario():
         # Retorna el mensaje de error de la excepcion como una cadena
         return {"status": "error", "mensaje": "La peticion no se puede completar", "error": str(err)}
 
-    # Ejemplo de uso:
 
 
-@app.route("/api/new-user")
-def VistaCrearUsuario():
-    return render_template("new-user2.html")
 
-
-# Prueba mia
-# http://localhost:5000/api/card/new?card_number=6549879&owner_id=1235&owner_name=prueba&bank_name=avvillas&due_date=19-10-2023&franchise=mastercard&payment_day=13&monthly_fee=6700&interest_rate=3.1 
 
 @app.route("/api/back")
 def back():
     return render_template("back.html")
 
-
+@app.route("/api/new-user")
+def VistaCrearUsuario():
+    return render_template("new-user2.html")
 @app.route("/api/card/new")
 def crearUsuario():
     try:
@@ -80,7 +75,6 @@ def crearUsuario():
 
     # Esta linea permite que nuestra aplicación se ejecute individualmente
 
-
 def has_no_empty_params(rule):
     defaults = rule.defaults if rule.defaults is not None else ()
     arguments = rule.arguments if rule.arguments is not None else ()
@@ -90,7 +84,7 @@ def has_no_empty_params(rule):
 # Ejemplo mio.
 # http://localhost:5000/api/simulate/purchase?card_number=4563&purchase_amount=200000&payments=36&pay_day=2024-10-10
 @app.route('/new_purchase')
-def nueva_compra():
+def purchase():
     return render_template('nueva_compra.html')
 
 @app.route("/api/simulate/purchase")
@@ -111,8 +105,11 @@ def purchase_1():
 
 
 # http://localhost:5000/api/simulate/saving?purchase_amount=200000&monthly_payments=24&interest_rate=3.1
+@app.route('/saving')
+def savings():
+    return render_template('simulate_saving.html')
 @app.route("/api/simulate/saving")
-def savigs():
+def savings_1():
     try:
         amount = request.args["purchase_amount"]
         payment = request.args["monthly_payments"]
@@ -120,24 +117,26 @@ def savigs():
 
         save = ControladorUsuarios.AhorroProgramado(int(amount), int(payment), interest_rate)
 
-        return {"status": "ok", "months": save}
+        return render_template("view_saving.html",amount=amount,payment=payment,interest_rate=interest_rate,save=save)
     except Exception as err:
         return {"status": "error", "mensaje": "La peticion no se puede completar", "error": str(err)}
 
 
-# http://localhost:5000/api/purchase/new?card_number=4563&purchase_amount=200000&payments=36&pay_day=2024-10-10
-
-@app.route("/api/purchase/new")
+@app.route('/df')
 def insert_df():
+    return render_template('simulate_df.html')
+@app.route("/api/purchase/new")
+def insert_df_1():
     try:
         card_number = request.args["card_number"]
         amount = request.args["purchase_amount"]
         payment = request.args["payments"]
         pay_day = request.args["pay_day"]
 
-        ControladorUsuarios.dataframe_amortization(card_number, int(amount), int(payment), pay_day)
+        lista_df = ControladorUsuarios.dataframe_amortization(card_number, int(amount), int(payment), pay_day)
+        context = len(lista_df)
 
-        return {"status": "ok"}
+        return render_template("view_df.html",lista_df=lista_df,context=context)
     except Exception as err:
         return {"status": "error", "mensaje": "La peticion no se puede completar", "error": str(err)}
 

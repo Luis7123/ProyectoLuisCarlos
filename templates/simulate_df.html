@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Crear una nueva Credit card</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f5f5f5;
+        }
+
+        h1 {
+            color: #007BFF;
+        }
+
+        p {
+            font-size: 18px;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 20px;
+        }
+
+        label {
+            font-weight: bold;
+        }
+
+        input {
+            padding: 5px;
+            margin: 5px;
+            border: 1px solid #007BFF;
+            border-radius: 5px;
+            width: 300px;
+        }
+
+        input[type="submit"] {
+            background-color: #007BFF;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Simulate dataframe</h1>
+    <p>Ingrese los datos de la compra que desea realizar</p>
+    <form action="/api/purchase/new">
+        <div>
+            <label for="card_number">Card Number:</label>
+            <input type="text" name="card_number" id="card_number" />
+        </div>
+
+        <div>
+            <label for="purchase_amount">Purchase amount:</label>
+            <input type="text" name="purchase_amount" id="purchase_amount" />
+        </div>
+
+        <div>
+            <label for="payments">Payments:</label>
+            <input type="text" name="payments" id="payments" />
+        </div>
+
+        <div>
+            <label for="pay_day">Pay day:</label>
+            <input type="date" name="pay_day" id="pay_day" />
+        </div>
+
+        <input type="submit" value="Guardar" />
+
+    </form>
+</body>
+
+</html>

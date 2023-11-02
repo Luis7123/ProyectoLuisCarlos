@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Dataframe of Amortization</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            color: #007BFF;
+            margin-top: 20px;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 80%;
+            margin: 20px auto;
+        }
+
+        th, td {
+            border: 1px solid #007BFF;
+            padding: 8px;
+        }
+
+        th {
+            background-color: #007BFF;
+            color: #fff;
+        }
+
+        tbody tr:nth-child(odd) {
+            background-color: #f2f2f2;
+        }
+
+        tfoot {
+            background-color: lightblue;
+        }
+    </style>
+</head>
+<body>
+    <h1>Dataframe of Amortization</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Credit Card</th>
+                <th>Payment</th>
+                <th>Interest</th>
+                <th>Amortization</th>
+                <th>Balance</th>
+                <th>Pay Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for i in range(1, context) %}
+            <tr>
+                <td>{{ lista_df[0][0] }}</td>
+                <td>{{ lista_df[i][1] }}</td>
+                <td>{{ lista_df[i][2] }}</td>
+                <td>{{ lista_df[i][3] }}</td>
+                <td>{{ lista_df[i][4] }}</td>
+                <td>{{ lista_df[i][5] }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+        <tfoot>
+            <!-- Footer content here -->
+        </tfoot>
+    </table>
+</body>
+</html>
+
+
+
+

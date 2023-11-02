@@ -318,12 +318,12 @@ def CalcularCuota(tarjeta:str,amount,payment_time):
         return (payment)
 
 
-def AhorroProgramado( amount,payment_time,interest_rate=0):
+def AhorroProgramado( amount,payment_time,interest_rate=0.9):
     """
     This function helps the user to have a better distribution of money.
     Giving them a good way to save money and paying it in exact amount in a couple of months 
     """
-    i= 0.9/100
+    i= float(interest_rate)/100
     payment=(amount * i) / (1 - (1 + i) ** (-payment_time))
     #Formula.
     return math.ceil(math.log(1 + (amount * i / payment)) / math.log(1 + i))
