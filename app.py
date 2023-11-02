@@ -140,6 +140,20 @@ def insert_df_1():
     except Exception as err:
         return {"status": "error", "mensaje": "La peticion no se puede completar", "error": str(err)}
 
+@app.route('/suma')
+def suma():
+    return render_template('suma.html')
+@app.route("/api/sum/new")
+def suma1():
+    try:
+        date1 = request.args["date1"]
+        date2 = request.args["date2"]
+
+        value = ControladorUsuarios.SumCuotas(date1,date2)
+
+        return render_template("suma_1.html",date1=date2,date2=date2,value=value)
+    except Exception as err:
+        return {"status": "error", "mensaje": "La peticion no se puede completar", "error": str(err)}
 
 if __name__ == '__main__':
     app.run(debug=True)
