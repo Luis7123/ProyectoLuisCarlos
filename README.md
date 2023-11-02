@@ -20,11 +20,11 @@ Utilice el script en sql\crear-usuarios.sql para crear antes de ejecutar la apli
 1. Copie el archivo `SecretConfig-sample.py` como `SecretConfig.py` y establezca en este archivo los datos de conexión a su base de datos.
 
 ```python
-DB_HOST = "su_host_de_bd"
-DB_PORT = su_puerto_de_bd
-DB_USER = "su_usuario_de_bd"
-DB_PASSWORD = "su_contraseña_de_bd"
-DB_NAME = "nombre_de_su_bd"
+DATABASE = "ESCRIBA EL NOMBRE DE LA BASE DE DATOS"
+USER = "ESCRIBA EL USUARIO DE LA DB"
+PASSWORD = "ESCRIBA LA CONSTRASEÑA"
+HOST = "ESCRIBA LA DIRECCION DNS O DIRECCION IP DEL SERVIDOR"
+PORT = 5432 # POR DEFECTO ES 5432, PERO PUEDE CAMBIAR EN SU DB
 ```
 
 ## Ejecución de la aplicación
@@ -36,6 +36,26 @@ Una vez que haya configurado la conexión a la base de datos y creado la tabla "
 ```python
 python app.py
 ```
+O corriendo desde la terminal.
 
 # Uso de la aplicación
 La aplicación permite gestionar información de usuarios en la base de datos a través de la interfaz de usuario. Puede agregar, editar, eliminar y ver la información de los usuarios en la base de datos.
+
+# Funcionalidades
+### Menú
+La aplicación debe contar con una página principal que tenga acceso a cada una de las sus funcionalidades 
+
+### Registrar una tarjeta de crédito
+La aplicación le permite al usuario registrar cada una de las tarjetas de crédito que posee, con la fecha de pago de cada mes, la cuota de manejo mensual que debe pagar y la tasa de interés que cobra la tarjeta por cada compra
+
+### Simular una compra
+Cuando el usuario desea hacer una compra con tarjeta de crédito, le indica el valor de la cuota mensual y el total de intereses que pagará por la compra, dada la tasa de interés de la tarjeta y el numero de cuotas en que planea realizar la compra
+
+### Ahorro programado sugerido
+La aplicación le sugerirá al usuario un plan de ahorro programado, para que en lugar de comprar con la tarjeta de crédito, ahorre periódicamente para realizar la misma compra de contado
+
+### Registrar compra
+Cuando el usuario realice una compra, la aplicación almacena el plan de amortización de esa compra, la identidad de la tarjeta que usó y la fecha en que debe pagar cada cuota y valor, para que más adelante el usuario pueda saber la suma que debe pagar en cada mes
+
+### Programación de pagos
+La aplicación le permitirá al usuario obtener un informe que le permita conocer la suma de las cuotas mensuales que debe pagar por sus compras, en un rango de meses que el usuario elija
