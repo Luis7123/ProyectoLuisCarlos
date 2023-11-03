@@ -144,7 +144,7 @@ def insert_df_1():
 def suma():
     return render_template('suma.html')
 @app.route("/api/sum/new")
-def suma1():
+def suma_1():
     try:
         date1 = request.args["date1"]
         date2 = request.args["date2"]
@@ -154,6 +154,22 @@ def suma1():
         return render_template("suma_1.html",date1=date2,date2=date2,value=value)
     except Exception as err:
         return {"status": "error", "mensaje": "La peticion no se puede completar", "error": str(err)}
+
+
+@app.route('/delete')
+def delete():
+    return render_template('delete.html')
+@app.route("/api/delete")
+def delete_1():
+    try:
+        card_number = request.args["card_number"]
+        usuario_tarjeta = ControladorUsuarios.BuscarPorNumeroTarjeta(card_number) 
+        value = ControladorUsuarios.Borrar_Por_Tarjeta(usuario_tarjeta)
+
+        return render_template("delete_1.html",usuario_tarjeta=usuario_tarjeta)
+    except Exception as err:
+        return {"status": "error", "mensaje": "La peticion no se puede completar", "error": str(err)}
+
 
 if __name__ == '__main__':
     app.run(debug=True)

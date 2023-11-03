@@ -124,6 +124,12 @@ def Borrar( usuario ):
     cursor.execute( sql )
     cursor.connection.commit()
 
+def Borrar_Por_Tarjeta( usuario ):
+    """ Elimina las filas que contienen a un usuario en todas las bases de datos """
+    sql = f"delete from CreditCards where numero = '{usuario.numero}'"
+    cursor = ObtenerCursor()
+    cursor.execute( sql )
+    cursor.connection.commit()
 
 def Insertar( usuario : CreditCard ):
     """ 
