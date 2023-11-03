@@ -59,3 +59,6 @@ Cuando el usuario realice una compra, la aplicación almacena el plan de amortiz
 
 ### Programación de pagos
 La aplicación le permitirá al usuario obtener un informe que le permita conocer la suma de las cuotas mensuales que debe pagar por sus compras, en un rango de meses que el usuario elija
+
+## Borrar tarjeta de credito
+La aplicacion permitirá al usuario borrar la tarjeta de credito que este desee, la manera de hacerlo será escribiendo explicitamente cual numero tarjeta borrará (Cuidado con esta funcion).
